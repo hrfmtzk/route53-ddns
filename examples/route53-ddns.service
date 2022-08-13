@@ -9,6 +9,8 @@ Group=root
 Environment=AWS_ACCESS_KEY_ID=xxxxxxxx
 Environment=AWS_SECRET_ACCESS_KEY=xxxxxxxx
 Environment=AWS_DEFAULT_REGION=us-east-1
+Environment=ZONE_ID=xxxxxxxx
+Environment=RESOURCE_RECORD_NAME=www.example.com
 WorkingDirectory=/path/to/project/route53-ddns
 ExecStart=/path/to/project/route53-ddns/.venv/bin/python index.py -v
 TimeoutSec=30
