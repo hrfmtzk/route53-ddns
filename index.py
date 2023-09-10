@@ -1,6 +1,27 @@
+import socket
+from types import TracebackType
+from typing import Optional, Type
+
 import boto3
 import click
 import requests
+
+
+class Ipv4Requests:
+    def __enter__(self) -> None:
+        requests.packages.urllib3.util.connection.allowed_gai_family = (
+            lambda: socket.AF_INET
+        )
+
+    def __exit__(
+        self,
+        exc_type: Optional[Type[BaseException]],
+        exc_value: Optional[BaseException],
+        traceback: Optional[TracebackType],
+    ) -> None:
+        requests.packages.urllib3.util.connection.allowed_gai_family = (
+            lambda: socket.AF_UNSPEC
+        )
 
 
 class Route53Ddns:
@@ -12,7 +33,8 @@ class Route53Ddns:
     def _get_ip_address(self) -> str:
         url = "https://ifconfig.io/all.json"
 
-        res = requests.get(url)
+        with Ipv4Requests():
+            res = requests.get(url)
 
         data = res.json()
 
